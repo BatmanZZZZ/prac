@@ -9,7 +9,7 @@ from PIL import Image
 
 # ----- Page configs -----
 st.set_page_config(
-    page_title="<Your Name> Portfolio",
+    page_title="Your Name Portfolio",
     page_icon="📊",
 )
 
@@ -42,13 +42,12 @@ st.image(img_arr, caption="Original Image" if not is_example else "Original exam
 st.write("#")
 
 
-# TODO: Ex. 1.1: Get the minimum and maximum values for the vertical and horizontal ranges, so the size of the img_arr array -----
-
+# Ex. 1.1: Get the minimum and maximum values for the vertical and horizontal ranges, so the size of the img_arr array -----
 min_height = 0 
-max_height = None   # TODO: Replace None with the maximum height of the image using np.shape() function
+max_height = img_arr.shape[0]  # Maximum height of the image
 
 min_width = 0
-max_width = None    # TODO: Replace None with the maximum width of the image using np.shape() function   
+max_width = img_arr.shape[1]   # Maximum width of the image
 
 
 # ----- Creating the sliders to receive the user input with the dimensions to crop the image ----- 
@@ -56,7 +55,7 @@ if type(max_height) == int and type(max_width) == int:
     
     cols1 = st.columns([4, 1, 4])
 
-    # this returns a tuple like (100, 300), for the veritcal range to crop
+    # this returns a tuple like (100, 300), for the vertical range to crop
     crop_min_h, crop_max_h = cols1[0].slider("Crop Vertical Range", min_height, max_height, (int(max_height*0.1), int(max_height*0.9)))   
     # this returns a tuple like (100, 300), for the horizontal range to crop
     crop_min_w, crop_max_w = cols1[2].slider("Crop Horizontal Range", min_width, max_width, (int(max_width*0.1), int(max_width*0.9)))    
@@ -68,9 +67,8 @@ else:
     st.subheader("⚠️ You still need to develop the Ex 1.1.")
 
 
-# TODO: Ex. 1.3: Crop the image array img_arr using the crop_min_h, crop_max_h, crop_min_w and crop_max_w values -----
-
-crop_arr = None  # TODO: Generate the crop array into a new variable, use NumPy array slicing
+# Ex. 1.3: Crop the image array img_arr using the crop_min_h, crop_max_h, crop_min_w and crop_max_w values -----
+crop_arr = img_arr[crop_min_h:crop_max_h, crop_min_w:crop_max_w]
 
 
 # ----- Displaying the cropped image and creating a download button to download the image -----
@@ -83,7 +81,7 @@ if type(crop_arr) == np.ndarray:
     cropped_img_bytes = buf.getvalue()
 
     cols2 = st.columns([4, 1, 4])
-    file_name = cols2[0].text_input("Chose a File Name:", "cropped_image") + ".png"
+    file_name = cols2[0].text_input("Choose a File Name:", "cropped_image") + ".png"
 
     st.download_button(f"Download the image `{file_name}`", cropped_img_bytes, file_name=file_name)
 
